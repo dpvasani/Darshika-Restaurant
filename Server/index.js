@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config(); // This should load your .env variables
 
 // dotenv.config({ path: './env' });
-import connectDB from "./db/dbconnect.js";
+import connectDB from "./src/db/dbconnect.js";
 // const app = express();
 import app from "./app.js"; // Import the app instance
 // import app from "app.js";
