@@ -2,11 +2,11 @@ import React from 'react'
 import { useTheme } from '../../hooks/ThemeContext';
 
 const categoryItems = [
-    {id: 1, title: "Main Dish", despriction: "(86 dishes)", image: "/images/home/category/img1.png"},
-    {id: 2, title: "Break Fast", despriction: "(12 break fast)", image: "/images/home/category/img2.png"},
-    {id: 3, title: "Dessert", despriction: "(48 dessert)", image: "/images/home/category/img3.png"},
-    {id: 4, title: "Browse All", despriction: "(255 Items)", image: "/images/home/category/img4.png"}
-]
+    { id: 1, title: "Main Dish", description: "(86 dishes)", image: "/images/home/category/img1.png" },
+    { id: 2, title: "Breakfast", description: "(12 breakfast)", image: "/images/home/category/img2.png" },
+    { id: 3, title: "Dessert", description: "(48 desserts)", image: "/images/home/category/img3.png" },
+    { id: 4, title: "Browse All", description: "(255 Items)", image: "/images/home/category/img4.png" }
+];
 
 const Catagories = () => {
     const { isDarkMode } = useTheme();
@@ -25,7 +25,7 @@ const Catagories = () => {
                         <div className='w-full mx-auto flex items-center justify-center'><img src={item.image} alt="" className='bg-[#C1F1C6] p-5 rounded-full w-28 h-28' /></div>
                         <div className='mt-5 space-y-1'>
                             <h5 className='text-[#1E1E1E] font-semibold'>{item.title}</h5>
-                            <p className='text-secondary text-sm'>{item.despriction}</p>
+                            <p className='text-secondary text-sm'>{item.description}</p>
                         </div>
                     </div>
                 ))
