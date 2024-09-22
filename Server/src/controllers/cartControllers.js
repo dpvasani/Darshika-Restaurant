@@ -1,20 +1,17 @@
-// all carts operations
+import Carts from "../models/Carts.js";
 
-const Carts = require("../models/Carts");
-
-// get carts using email
-const getCartByEmail = async (req, res) => {
+// Get carts using email
+export const getCartByEmail = async (req, res) => {
   try {
     const email = req.query.email;
-    const query = { email: email };
-    // console.log(email)
+    const query = { email };
 
-     // extra for JWT verification 
-     const decodedEmail = req.decoded.email;
+    // Extra for JWT verification
+    const decodedEmail = req.decoded.email;
 
-     if(email !== decodedEmail){
-        res.status(403).json({ message: "Forbidden access!"});
-     }
+    if (email !== decodedEmail) {
+      return res.status(403).json({ message: "Forbidden access!" });
+    }
 
     const result = await Carts.find(query).exec();
     res.status(200).json(result);
@@ -23,15 +20,13 @@ const getCartByEmail = async (req, res) => {
   }
 };
 
-// post all carts
-const addToCarts = async (req, res) => {
+// Post all carts
+export const addToCarts = async (req, res) => {
   const { name, recipe, image, price, email, quantity, menuItemId } = req.body;
 
   try {
-    
     // Check if menuItemId already exists in the database
-    const existingCartItem = await Carts.findOne({email, menuItemId });
-    // console.log(existingCartItem)
+    const existingCartItem = await Carts.findOne({ email, menuItemId });
 
     if (existingCartItem) {
       // If menuItemId exists, send a message and do not create a new cart item
@@ -57,8 +52,8 @@ const addToCarts = async (req, res) => {
   }
 };
 
-// delete a cart
-const deleteCart = async (req, res) => {
+// Delete a cart
+export const deleteCart = async (req, res) => {
   const cartId = req.params.id;
   try {
     const deletedCart = await Carts.findByIdAndDelete(cartId);
@@ -73,8 +68,8 @@ const deleteCart = async (req, res) => {
   }
 };
 
-// update cart quantity
-const updateCart = async (req, res) => {
+// Update cart quantity
+export const updateCart = async (req, res) => {
   const cartId = req.params.id;
   const { name, recipe, image, price, email, quantity, menuItemId } = req.body;
   try {
@@ -94,9 +89,8 @@ const updateCart = async (req, res) => {
   }
 };
 
-// get a single cart items
-
-const getSingleCart = async (req, res) => {
+// Get a single cart item
+export const getSingleCart = async (req, res) => {
   const cartId = req.params.id;
   try {
     const cartItem = await Carts.findById(cartId);
@@ -109,12 +103,4 @@ const getSingleCart = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Cart Item not found" });
   }
-};
-
-module.exports = {
-  getCartByEmail,
-  addToCarts,
-  deleteCart,
-  updateCart,
-  getSingleCart,
 };

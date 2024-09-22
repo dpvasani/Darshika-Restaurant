@@ -1,25 +1,29 @@
-const express = require('express');
-const Carts = require('../models/Carts');
+import express from "express"; // Use 'import' instead of 'require'
+import {
+  getCartByEmail,
+  addToCarts,
+  deleteCart,
+  updateCart,
+  getSingleCart,
+} from "../controllers/cartControllers.js"; // Ensure to include the '.js' extension
+import verifyToken from "../middlewares/verifyToken.js"; // Add '.js' extension
+import verifyAdmin from "../middlewares/verifyAdmin.js"; // Add '.js' extension
+
 const router = express.Router();
 
-const cartController = require('../controllers/cartControllers');
+// Get all carts by email
+router.get("/", verifyToken, getCartByEmail);
 
-const verifyToken = require('../middlewares/verifyToken');
-const verifyAdmin = require('../middlewares/verifyAdmin');
+// Post cart item
+router.post("/", addToCarts);
 
-router.get('/',verifyToken, (req, res) => {
-    cartController.getCartByEmail(req, res)
-});
-// post cart item
-router.post('/', cartController.addToCarts);
+// Delete cart item
+router.delete("/:id", deleteCart);
 
-// delete cart item
-router.delete('/:id', cartController.deleteCart)
+// Update cart quantity
+router.put("/:id", updateCart);
 
-// update cart quantity
-router.put('/:id', cartController.updateCart);
+// Get single cart item
+router.get("/:id", getSingleCart);
 
-// get single cart item
-router.get('/:id', cartController.getSingleCart);
-
-module.exports = router;
+export default router; // Use 'export default' instead of 'module.exports'

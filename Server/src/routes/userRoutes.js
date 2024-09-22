@@ -1,25 +1,29 @@
-const express = require('express');
+import express from "express";
+import {
+  getAllUsers,
+  createUser,
+  deleteUser,
+  getAdmin,
+  makeAdmin,
+} from "../controllers/userControllers.js"; // Include the '.js' extension
+import verifyToken from "../middlewares/verifyToken.js"; // Include the '.js' extension
+import verifyAdmin from "../middlewares/verifyAdmin.js"; // Include the '.js' extension
+
 const router = express.Router();
-const userController = require('../controllers/userControllers');
 
-const verifyToken = require('../middlewares/verifyToken');
-const verifyAdmin = require('../middlewares/verifyAdmin');
+// Get all users
+router.get("/", verifyToken, verifyAdmin, getAllUsers);
 
-// get all users
-router.get('/', verifyToken, verifyAdmin, (req, res) => {
-    userController.getAllUsers(req, res)
-} )
+// Create a new user
+router.post("/", createUser);
 
-// create a new user
-router.post('/', userController.createUser )
+// Delete a user
+router.delete("/:id", verifyToken, verifyAdmin, deleteUser);
 
-// delete a user
-router.delete('/:id',verifyToken, verifyAdmin, userController.deleteUser)
+// Get admin
+router.get("/admin/:email", verifyToken, getAdmin);
 
-// get admin
-router.get('/admin/:email',verifyToken, userController.getAdmin);
+// Make admin
+router.patch("/admin/:id", verifyToken, verifyAdmin, makeAdmin);
 
-// make admin
-router.patch('/admin/:id',verifyToken, verifyAdmin, userController.makeAdmin);
-
-module.exports = router;
+export default router; // Use 'export default' instead of 'module.exports'

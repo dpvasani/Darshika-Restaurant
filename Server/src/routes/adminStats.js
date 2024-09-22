@@ -1,15 +1,15 @@
-const express = require('express');
-const router = express.Router();
+import express from "express"; // Use 'import' instead of 'require'
+import User from "../models/User.js"; // Ensure to include the '.js' extension
+import Menu from "../models/Menu.js";
+import Payment from "../models/Payments.js";
+
 // Import your middleware
-const User = require('../models/User');
-const Menu = require('../models/Menu');
-const Payment = require('../models/Payments'); 
+import verifyToken from "../middlewares/verifyToken.js";
+import verifyAdmin from "../middlewares/verifyAdmin.js";
 
-// middleware
-const verifyToken = require('../middlewares/verifyToken')
-const verifyAdmin = require('../middlewares/verifyAdmin')
+const router = express.Router();
 
-router.get('/', verifyToken, verifyAdmin, async (req, res) => {
+router.get("/", verifyToken, verifyAdmin, async (req, res) => {
   try {
     const users = await User.countDocuments();
     const menuItems = await Menu.countDocuments();
@@ -20,10 +20,10 @@ router.get('/', verifyToken, verifyAdmin, async (req, res) => {
         $group: {
           _id: null,
           totalRevenue: {
-            $sum: '$price'
-          }
-        }
-      }
+            $sum: "$price",
+          },
+        },
+      },
     ]);
 
     const revenue = result.length > 0 ? result[0].totalRevenue : 0;
@@ -32,14 +32,12 @@ router.get('/', verifyToken, verifyAdmin, async (req, res) => {
       users,
       menuItems,
       orders,
-      revenue
+      revenue,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Internal Server Error");
   }
 });
 
-
-
-module.exports = router;
+export default router; // Use 'export default' instead of 'module.exports'

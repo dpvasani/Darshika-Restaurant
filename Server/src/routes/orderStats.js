@@ -1,53 +1,53 @@
-const express = require('express');
+import express from "express"; // Use 'import' instead of 'require'
+import User from "../models/User.js"; // Ensure to include the '.js' extension
+import Menu from "../models/Menu.js"; // Include the '.js' extension
+import Payment from "../models/Payments.js"; // Include the '.js' extension
+
+// Middleware imports
+import verifyToken from "../middlewares/verifyToken.js"; // Include the '.js' extension
+import verifyAdmin from "../middlewares/verifyAdmin.js"; // Include the '.js' extension
+
 const router = express.Router();
-// Import your middleware
-const User = require('../models/User');
-const Menu = require('../models/Menu');
-const Payment = require('../models/Payments'); // Corrected import statement
 
-// middleware
-const verifyToken = require('../middlewares/verifyToken');
-const verifyAdmin = require('../middlewares/verifyAdmin');
-
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const result = await Payment.aggregate([
-        {
-          $unwind: '$menuItems'
+      {
+        $unwind: "$menuItems",
+      },
+      {
+        $lookup: {
+          from: "menus", // Assuming the menu collection name is 'menus'
+          localField: "menuItems",
+          foreignField: "_id",
+          as: "menuItemDetails",
         },
-        {
-          $lookup: {
-            from: 'menus', // Assuming the menu collection name is 'menus'
-            localField: 'menuItems',
-            foreignField: '_id',
-            as: 'menuItemDetails'
-          }
+      },
+      {
+        $unwind: "$menuItemDetails",
+      },
+      {
+        $group: {
+          _id: "$menuItemDetails.category",
+          quantity: { $sum: "$quantity" },
+          revenue: { $sum: "$price" },
         },
-        {
-          $unwind: '$menuItemDetails'
+      },
+      {
+        $project: {
+          _id: 0,
+          category: "$_id",
+          quantity: "$quantity",
+          revenue: "$revenue",
         },
-        {
-          $group: {
-            _id: '$menuItemDetails.category',
-            quantity: { $sum: '$quantity' },
-            revenue: { $sum: '$price' }
-          }
-        },
-        {
-          $project: {
-            _id: 0,
-            category: '$_id',
-            quantity: '$quantity',
-            revenue: '$revenue'
-          }
-        }
-      ]);
+      },
+    ]);
 
     res.json(result);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Internal Server Error");
   }
 });
 
-module.exports = router;
+export default router; // Use 'export default' instead of 'module.exports'

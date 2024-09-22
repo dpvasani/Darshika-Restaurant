@@ -1,38 +1,31 @@
-const express = require('express');
-const Menu = require('../models/Menu');
+import express from "express"; // Use 'import' instead of 'require'
+import Menu from "../models/Menu.js"; // Ensure to include the '.js' extension
+import {
+  getAllMenuItems,
+  postMenuItem,
+  deleteMenu,
+  singleMenuItem,
+  updateMenuItem,
+} from "../controllers/menuControllers.js"; // Use named imports
+import verifyToken from "../middlewares/verifyToken.js"; // Add '.js' extension
+import verifyAdmin from "../middlewares/verifyAdmin.js"; // Add '.js' extension
+
 const router = express.Router();
 
-const menuController = require('../controllers/menuControllers')
+// Get all menu items
+router.get("/", getAllMenuItems);
 
-const verifyToken = require('../middlewares/verifyToken');
-const verifyAdmin = require('../middlewares/verifyAdmin');
+// Post a menu item
+router.post("/", verifyToken, verifyAdmin, postMenuItem);
 
+// Delete a menu item
+router.delete("/:id", verifyToken, verifyAdmin, deleteMenu);
 
-// get all menu items
-router.get('/', menuController.getAllMenuItems);
+// Get a single menu item
+router.get("/:id", singleMenuItem);
 
-// post a menu item
-router.post('/', verifyToken, verifyAdmin, menuController.postMenuItem);
+// Update a menu item
+router.patch("/:id", verifyToken, verifyAdmin, updateMenuItem);
 
-// delete a menu item
-router.delete('/:id',verifyToken, verifyAdmin, menuController.deleteMenu);
-
-// get a single menu item
-router.get('/:id', menuController.singleMenuItem);
-
-// update a menu item
-router.patch('/:id',verifyToken, verifyAdmin, menuController.updateMenuItem);
-
-
-// get all menu items
-
-// router.get('/', async (req, res) => {
-//     try {
-//         const menus = await Menu.find({});
-//         res.status(200).json(menus);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// });
-
-module.exports = router;
+// Export the router
+export default router; // Use 'export default' instead of 'module.exports'
