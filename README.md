@@ -1,6 +1,6 @@
 # Learn How to Build a Complete MERN Stack Project with Dashboard and Admin Panel! 🍽️
 
-Welcome to this exciting tutorial series, where we'll guide you through the process of building a fully functional restaurant website using the MERN stack (MongoDB, Express.js, React.js, Node.js). By the end, you'll have a feature-rich, customizable restaurant site complete with an admin panel, secure authentication, payment processing, and more!
+Welcome to this exciting tutorial series, where i will guide you through the process of building a fully functional restaurant website using the MERN stack (MongoDB, Express.js, React.js, Node.js). By the end, you'll have a feature-rich, customizable restaurant site complete with an admin panel, secure authentication, payment processing, and more!
 
 ## 📋 Overview
 In this series, you'll learn how to:
