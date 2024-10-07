@@ -12,6 +12,7 @@ In this series, you'll learn how to:
 - Host and manage images and product data.
 - Build an online food ordering system from scratch.
 
+
 This series is perfect for developers of all skill levels, from beginners to advanced. By the end of the series, you will have developed a restaurant website with modern, production-grade features!
 
 ---
