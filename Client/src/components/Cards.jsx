@@ -36,7 +36,7 @@ const Cards = ({ item }) => {
                   icon: 'success',
                   title: 'Food added on the cart.',
                   showConfirmButton: false,
-                  timer: 1500
+                  timer: 15000
                 })
           }
         })
@@ -48,7 +48,7 @@ const Cards = ({ item }) => {
             icon: 'warning',
             title: `${errorMessage}`,
             showConfirmButton: false,
-            timer: 1500
+            timer: 15000
           })
         });
     }

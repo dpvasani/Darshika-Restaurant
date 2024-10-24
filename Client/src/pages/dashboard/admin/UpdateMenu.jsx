@@ -52,7 +52,7 @@ const UpdateMenu = () => {
           icon: "success",
           title: `Item is updated successfully!`,
           showConfirmButton: false,
-          timer: 1500,
+          timer: 15000,
         });
         navigate("/dashboard/manage-items");
       }

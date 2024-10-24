@@ -46,7 +46,7 @@ const AddMenu = () => {
               icon: "success",
               title: `${data.name} is added to the menu.`,
               showConfirmButton: false,
-              timer: 1500
+              timer: 15000
             });
       }
   }

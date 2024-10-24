@@ -38,7 +38,7 @@ const indexOfLastItem = currentPage * items_Per_Page;
                     icon: "success",
                     title: `${item.name} has been deleted`,
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 15000
             });
 
         }

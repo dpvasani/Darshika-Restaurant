@@ -52,7 +52,7 @@ const ManageBookings = () => {
               icon: "success",
               title: `Order Confirmed Now!`,
               showConfirmButton: false,
-              timer: 1500
+              timer: 15000
             });
           refetch();
       })
