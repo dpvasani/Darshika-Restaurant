@@ -17,7 +17,7 @@ dotenv.config();
 const app = express();
 const stripeClient = stripe(process.env.PAYMENT_SECRET_KEY);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
@@ -32,7 +32,7 @@ app.use(cookieParser());
 app.post("/jwt", async (req, res) => {
   const user = req.body;
   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1h",
+    expiresIn: "10h",
   });
   res.send({ token });
 });
