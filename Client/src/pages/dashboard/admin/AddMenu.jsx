@@ -38,7 +38,7 @@ const AddMenu = () => {
       // 
       const menuRes = await axiosSecure.post('/menu', menuItem);
       console.log(menuRes)
-      if(menuRes.status === 200){
+      if(menuRes.status === 201){
           // show success popup
           reset();
           Swal.fire({
