@@ -1,46 +1,50 @@
-import { ApiError } from "../utils/ApiError.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
+// src/middlewares/verifyToken.js
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-// Load environment variables
 dotenv.config();
 
-const verifyToken = asyncHandler(async (req, res, next) => {
+const ACCESS_TOKEN_SECRET =
+  process.env.ACCESS_TOKEN_SECRET || "DarshanVasaniVanshikaThesiya";
+
+const verifyToken = (req, res, next) => {
   try {
-    // Extract token from cookies or Authorization header
-    const token =
-      req.cookies?.accessToken ||
-      req.header("Authorization")?.replace(/^Bearer\s+/, "");
+    // Retrieve the token from the Authorization header
+    const authHeader = req.headers.authorization;
 
-    // Check if token is missing
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res
+        .status(401)
+        .json({ message: "Authorization header missing or malformed" });
+    }
+
+    // Extract the token
+    const token = authHeader.split(" ")[1];
+
+    // Check if token is null or empty
     if (!token) {
-      throw new ApiError(401, "Unauthorized request: Token not provided");
+      return res
+        .status(401)
+        .json({ message: "Token missing in Authorization header" });
     }
 
-    // Verify and decode the token
-    const decodedToken = jwt.verify(
-      token,
-      `${process.env.ACCESS_TOKEN_SECRET}`.trim()
-    );
+    // Verify the token
+    jwt.verify(token, ACCESS_TOKEN_SECRET, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({
+          message: "Unauthorized access: invalid token",
+          error: err.message,
+        });
+      }
 
-    // Fetch user from database using decoded token's user ID
-    const user = await User.findById(decodedToken?._id).select(
-      "-password -refreshToken"
-    );
-
-    // If user not found
-    if (!user) {
-      throw new ApiError(401, "Invalid Access Token: User not found");
-    }
-
-    // Attach user to the request object
-    req.user = user;
-    next();
+      // Attach decoded token data to req.decoded (for consistency with other middlewares)
+      req.decoded = decoded; // Change from req.user to req.decoded
+      next();
+    });
   } catch (error) {
-    // Handle invalid token or verification failure
-    next(new ApiError(401, error.message || "Invalid Access Token"));
+    console.error("Token verification error:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
-});
+};
 
 export default verifyToken;
